@@ -1,2 +1,2 @@
-# my-first-docker-image
-My first Docker image
+# My First Docker Image
+This repo contains the dockerfile of my first docker image.
