@@ -1,5 +1,5 @@
 FROM ubuntu
 MAINTAINER ahmadk953
-ADD VERSION .
+COPY VERSION .
 RUN apt-get update
 CMD ["echo", "hello world"]
