@@ -36,10 +36,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        
-      - name: Get into the directory
-        run: cd Docker && ls
-        timeout-minutes: 1
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
@@ -73,7 +69,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           
       - name: Check to see if we are in the right directory
-        run: ls
+        run: ls && cd Docker && ls
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
