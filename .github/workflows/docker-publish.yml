@@ -36,6 +36,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        
+      - name: Get into the diesctory
+        run: cd Docker
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
