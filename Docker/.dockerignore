@@ -2,4 +2,4 @@
 !release.sh
 !LICENSE
 !README.MD
-!./.github
+*/.github*
