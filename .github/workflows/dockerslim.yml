@@ -21,5 +21,6 @@ jobs:
       
     - name: Build Docker container
       run: ls && docker build -t akhaneducation/my-first-image .
+      
     - name: Build and optimise
-      run: docker-slim --debug build akhaneducation/my-first-image
+      run: docker images && docker-slim --debug build akhaneducation/my-first-image
