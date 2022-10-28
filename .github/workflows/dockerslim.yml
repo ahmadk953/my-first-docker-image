@@ -21,4 +21,4 @@ jobs:
       run: curl -sL https://raw.githubusercontent.com/docker-slim/docker-slim/master/scripts/install-dockerslim.sh | sudo -E bash -
       
     - name: Build and optimise
-      run: docker-slim build ahmadk953/myfirstimage
+      run: docker-slim --debug build ahmadk953/myfirstimage
