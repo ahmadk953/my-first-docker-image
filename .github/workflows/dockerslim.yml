@@ -8,7 +8,6 @@ jobs:
   setupandrun:
     name: Setup and run
     runs-on: ubuntu-latest
-    environment: production
     steps:
 
     - name: Checkout
@@ -20,5 +19,7 @@ jobs:
     - name: Download and setup
       run: curl -sL https://raw.githubusercontent.com/docker-slim/docker-slim/master/scripts/install-dockerslim.sh | sudo -E bash -
       
+    - name: Build Docker container
+      run: ls && docker build -t akhaneducation/my-first-image .
     - name: Build and optimise
-      run: docker-slim --debug build ahmadk953/myfirstimage
+      run: docker-slim --debug build akhaneducation/my-first-image
