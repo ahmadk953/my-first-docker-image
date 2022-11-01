@@ -1,5 +1,8 @@
-FROM ubuntu
-RUN apt-get update && apt-get clean && apt-get purge && rm -f -r /var/lib/dpkg/status
-RUN adduser --disabled-password myuser
-USER myuser
-CMD ["echo", "hello world"]
+# syntax=docker/dockerfile:1
+FROM node:12-alpine
+RUN apk add --no-cache python2 g++ make
+WORKDIR /app
+COPY . .
+RUN yarn install --production
+CMD ["node", "src/index.js"]
+EXPOSE 3000
