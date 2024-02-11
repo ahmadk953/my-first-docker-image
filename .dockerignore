@@ -3,5 +3,4 @@
 */.github/*
 !build.sh
 !build.bat
-!Layerfile
 */.git/*
