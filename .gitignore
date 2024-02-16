@@ -105,3 +105,6 @@ dist
 
 # Docker Build Cache
 .dccache
+
+# Other
+.vscode/

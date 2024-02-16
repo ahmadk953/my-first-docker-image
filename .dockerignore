@@ -4,3 +4,4 @@
 !build.sh
 !build.bat
 */.git/*
+*/.vscode/*
