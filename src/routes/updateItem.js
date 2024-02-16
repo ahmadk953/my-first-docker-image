@@ -6,5 +6,5 @@ module.exports = async (req, res) => {
         completed: req.body.completed,
     });
     const item = await db.getItem(req.params.id);
-    res.send(item);
+    res.json(item);
 };
