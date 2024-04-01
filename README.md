@@ -1,7 +1,7 @@
 # My First Docker Image
 
 > [!WARNING]
-> This repo is currently **NOT** being activly developed.
+> This project is not being actively worked on
 
 ## About
 This repo contains the dockerfile of my first docker image and an example TODO application.
