@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:21.7.2-alpine
+FROM node:21.7.3-alpine
 RUN apk add --no-cache python3 g++ make
 WORKDIR /app
 COPY . .
