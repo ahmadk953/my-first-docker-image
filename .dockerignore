@@ -1,7 +1,10 @@
 !LICENSE
 !README.MD
-*/.github/*
 !build.sh
 !build.bat
+!yarn.lock
+!package.json
+*/.github/*
 */.git/*
 */.vscode/*
+*/node_modules/*
