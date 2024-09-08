@@ -6,6 +6,7 @@ const getItems = require('./routes/getItems');
 const addItem = require('./routes/addItem');
 const updateItem = require('./routes/updateItem');
 const deleteItem = require('./routes/deleteItem');
+
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -15,9 +16,11 @@ app.use(
         'https://cdn.jsdelivr.net',
         "'unsafe-inline'",
       ],
+      blockAllMixedContent: [],
     },
   }),
 );
+app.use(helmet.hidePoweredBy());
 
 app.use(express.json());
 app.use(express.static(__dirname + '/static'));
