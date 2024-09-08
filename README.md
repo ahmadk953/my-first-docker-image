@@ -8,7 +8,7 @@
 
 ## About
 
-An example TODO application written in Javascript using SQLlite for the database and express for the web server, packaged into a Docker container.
+An example TODO application written in Javascript using SQLite for the database and express for the web server, packaged into a Docker container.
 
 ## Links
 

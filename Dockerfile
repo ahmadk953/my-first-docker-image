@@ -1,8 +1,8 @@
-FROM node:22.8.0-alpine
-RUN apk add --no-cache python3 g++ make
+FROM node:22-alpine
 WORKDIR /app
-COPY . .
+ADD src/ src/
+ADD package.json .
 RUN corepack enable
-RUN yarn add sqlite3@5.1.7 --ignore-scripts --production --omit=dev && yarn install --ignore-scripts --production --omit=dev
-CMD ["node", "src/index.js"]
+RUN yarn install --ignore-scripts --production --omit=dev --build-from-source
+CMD ["yarn", "start"]
 EXPOSE 3000
