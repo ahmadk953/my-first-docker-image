@@ -17,6 +17,7 @@ app.use(
         "'unsafe-inline'",
       ],
       blockAllMixedContent: [],
+      frameAncestors: ['self', 'https://unpkg.com', 'https://cdn.jsdelivr.net'],
     },
   }),
 );
