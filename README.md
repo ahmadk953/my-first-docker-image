@@ -1,10 +1,10 @@
 # My First Docker Image
 
 > [!WARNING]
-> This project currently **does not** work. Fixes are being make to make it work again.
+> This project's Docker image **currently doesn't work**. The project it's self works, just not the Docker image. It will be fixed in the future.
 
 > [!WARNING]
-> This project is not being actively worked on
+> This project is not being actively worked on.
 
 ## About
 
