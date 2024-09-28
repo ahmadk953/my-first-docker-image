@@ -1,8 +1,7 @@
 FROM node:22-alpine
 WORKDIR /app
-ADD src/ src/
-ADD package.json .
-RUN corepack enable
-RUN yarn install --ignore-scripts --production --omit=dev --build-from-source
+COPY src/ src/
+COPY package.json .
+RUN corepack enable && yarn install --ignore-scripts --production --omit=dev --build-from-source && yarn cache clean
 CMD ["yarn", "start"]
 EXPOSE 3000
