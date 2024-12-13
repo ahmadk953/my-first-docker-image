@@ -27,7 +27,7 @@
     "singleQuote": true
   },
   "devDependencies": {
-    "nodemon": "^3.1.7",
+    "nodemon": "^3.1.9",
     "prettier": "^3.4.2"
   },
   "packageManager": "yarn@1.22.22"
