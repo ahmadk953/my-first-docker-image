@@ -1,4 +1,4 @@
-FROM node:bookworm-slim
+FROM node:23.11.0-alpine3.21
 WORKDIR /app
 COPY src/ src/
 COPY package.json .
