@@ -11,8 +11,6 @@ updates:
       interval: 'daily'
     assignees:
       - 'ahmadk953'
-    reviewers:
-      - 'ahmadk953'
 
   - package-ecosystem: "docker"
     directory: "/"
@@ -20,5 +18,3 @@ updates:
       interval: "daily"
     assignees:
       - "ahmadk953"
-    reviewers:
-      - 'ahmadk953'
