@@ -1,6 +1,6 @@
 const waitPort = require('wait-port');
 const fs = require('fs');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const {
   MYSQL_HOST: HOST,
@@ -15,11 +15,31 @@ const {
 
 let pool;
 
+function readEnvOrFile(rawValue, valueFile) {
+  if (valueFile) {
+    return fs.readFileSync(valueFile, 'utf-8').trim();
+  }
+
+  return rawValue;
+}
+
+function toItem(row) {
+  if (!row) {
+    return null;
+  }
+
+  return {
+    id: row.id,
+    name: row.name,
+    completed: row.completed === 1 || row.completed === true,
+  };
+}
+
 async function init() {
-  const host = HOST_FILE ? fs.readFileSync(HOST_FILE) : HOST;
-  const user = USER_FILE ? fs.readFileSync(USER_FILE) : USER;
-  const password = PASSWORD_FILE ? fs.readFileSync(PASSWORD_FILE) : PASSWORD;
-  const database = DB_FILE ? fs.readFileSync(DB_FILE) : DB;
+  const host = readEnvOrFile(HOST, HOST_FILE);
+  const user = readEnvOrFile(USER, USER_FILE);
+  const password = readEnvOrFile(PASSWORD, PASSWORD_FILE);
+  const database = readEnvOrFile(DB, DB_FILE);
 
   await waitPort({ host, port: 3306 });
 
@@ -34,11 +54,11 @@ async function init() {
 
   return new Promise((acc, rej) => {
     pool.query(
-      'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean) DEFAULT CHARSET utf8mb4',
+      'CREATE TABLE IF NOT EXISTS todo_items (id VARCHAR(36) PRIMARY KEY, name VARCHAR(255) NOT NULL, completed BOOLEAN NOT NULL DEFAULT FALSE) DEFAULT CHARSET utf8mb4',
       (err) => {
         if (err) return rej(err);
 
-        console.log(`Connected to mysql db at host ${HOST}`);
+        console.log(`Connected to mysql db at host ${host}`);
         acc();
       },
     );
@@ -56,16 +76,13 @@ async function teardown() {
 
 async function getItems() {
   return new Promise((acc, rej) => {
-    pool.query('SELECT * FROM todo_items', (err, rows) => {
-      if (err) return rej(err);
-      acc(
-        rows.map((item) =>
-          Object.assign({}, item, {
-            completed: item.completed === 1,
-          }),
-        ),
-      );
-    });
+    pool.query(
+      'SELECT id, name, completed FROM todo_items ORDER BY id DESC',
+      (err, rows) => {
+        if (err) return rej(err);
+        acc(rows.map(toItem));
+      },
+    );
   });
 }
 
@@ -73,13 +90,7 @@ async function getItem(id) {
   return new Promise((acc, rej) => {
     pool.query('SELECT * FROM todo_items WHERE id=?', [id], (err, rows) => {
       if (err) return rej(err);
-      acc(
-        rows.map((item) =>
-          Object.assign({}, item, {
-            completed: item.completed === 1,
-          }),
-        )[0],
-      );
+      acc(toItem(rows[0]));
     });
   });
 }

@@ -1,51 +1,39 @@
-const express = require('express');
-const app = express();
-const helmet = require('helmet');
+const createApp = require('./app');
 const db = require('./persistence');
-const getItems = require('./routes/getItems');
-const addItem = require('./routes/addItem');
-const updateItem = require('./routes/updateItem');
-const deleteItem = require('./routes/deleteItem');
 
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      scriptSrc: [
-        "'self'",
-        'https://unpkg.com',
-        'https://cdn.jsdelivr.net',
-        "'unsafe-inline'",
-      ],
-      blockAllMixedContent: [],
-      frameAncestors: ['self', 'https://unpkg.com', 'https://cdn.jsdelivr.net'],
-    },
-  }),
-);
-app.use(helmet.hidePoweredBy());
+const port = Number(process.env.PORT) || 3000;
+const app = createApp();
 
-app.use(express.json());
-app.use(express.static(__dirname + '/static'));
+let server;
 
-app.get('/items', getItems);
-app.post('/items', addItem);
-app.put('/items/:id', updateItem);
-app.delete('/items/:id', deleteItem);
+async function start() {
+  try {
+    await db.init();
 
-db.init()
-  .then(() => {
-    app.listen(3000, () => console.log('Listening on port 3000'));
-  })
-  .catch((err) => {
-    console.error(err);
+    server = app.listen(port, () => {
+      console.log(`Listening on port ${port}`);
+    });
+  } catch (error) {
+    console.error(error);
     process.exit(1);
-  });
+  }
+}
 
-const gracefulShutdown = () => {
-  db.teardown()
-    .catch(() => {})
-    .then(() => process.exit());
-};
+async function gracefulShutdown() {
+  if (server) {
+    await new Promise((resolve) => server.close(resolve));
+  }
+
+  try {
+    await db.teardown();
+  } catch {
+  } finally {
+    process.exit(0);
+  }
+}
 
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);
 process.on('SIGUSR2', gracefulShutdown);
+
+start();

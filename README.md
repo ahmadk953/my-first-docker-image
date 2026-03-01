@@ -1,15 +1,24 @@
-# My First Docker Image
+# Todo App
 
-> [!WARNING]
-> This project's Docker image **currently doesn't work**. The project it's self works, just not the Docker image. It will be fixed in the future.
+A clean, working TODO application built with Express and a simple static frontend.
 
-> [!WARNING]
-> This project is not being actively worked on.
+## Run locally
 
-## About
+```bash
+yarn install
+yarn start
+```
 
-An example TODO application written in Javascript using SQLite for the database and express for the web server, packaged into a Docker container.
+Then open http://localhost:3000.
 
-## Links
+## Run with Docker
 
-Docker hub link: https://hub.docker.com/repository/docker/akhaneducation/my-first-image
+```bash
+docker build -t my-first-image .
+docker run --rm -p 3000:3000 my-first-image
+```
+
+## Storage
+
+- Default: SQLite at `./data/todo.db` (relative to the app working directory)
+- MySQL is used when `MYSQL_HOST` is set (with optional `*_FILE` secret paths)

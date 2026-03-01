@@ -1,4 +1,2 @@
-#!bin/bash
-docker buildx build -t akhaneducation/my-first-image:latest .
-echo "Build Completed! Running Docker Scout Analysis..."
-docker scout quickview
+#!/bin/bash
+docker buildx build -t todo-app:latest .

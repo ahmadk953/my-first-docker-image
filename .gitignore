@@ -106,5 +106,8 @@ dist
 # Docker Build Cache
 .dccache
 
+# Local sqlite data
+data/
+
 # Other
 .vscode/

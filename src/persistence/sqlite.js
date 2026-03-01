@@ -1,11 +1,26 @@
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
-const location = process.env.SQLITE_DB_LOCATION || '/etc/todos/todo.db';
+const path = require('path');
 
-let db, dbAll, dbRun;
+const location =
+  process.env.SQLITE_DB_LOCATION || path.join(process.cwd(), 'data', 'todo.db');
+
+let db;
+
+function toItem(row) {
+  if (!row) {
+    return null;
+  }
+
+  return {
+    id: row.id,
+    name: row.name,
+    completed: row.completed === 1,
+  };
+}
 
 function init() {
-  const dirName = require('path').dirname(location);
+  const dirName = path.dirname(location);
   if (!fs.existsSync(dirName)) {
     fs.mkdirSync(dirName, { recursive: true });
   }
@@ -18,8 +33,8 @@ function init() {
         console.log(`Using sqlite database at ${location}`);
 
       db.run(
-        'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean)',
-        (err, result) => {
+        'CREATE TABLE IF NOT EXISTS todo_items (id TEXT PRIMARY KEY, name TEXT NOT NULL, completed INTEGER NOT NULL DEFAULT 0)',
+        (err) => {
           if (err) return rej(err);
           acc();
         },
@@ -39,31 +54,26 @@ async function teardown() {
 
 async function getItems() {
   return new Promise((acc, rej) => {
-    db.all('SELECT * FROM todo_items', (err, rows) => {
-      if (err) return rej(err);
-      acc(
-        rows.map((item) =>
-          Object.assign({}, item, {
-            completed: item.completed === 1,
-          }),
-        ),
-      );
-    });
+    db.all(
+      'SELECT id, name, completed FROM todo_items ORDER BY rowid DESC',
+      (err, rows) => {
+        if (err) return rej(err);
+        acc(rows.map(toItem));
+      },
+    );
   });
 }
 
 async function getItem(id) {
   return new Promise((acc, rej) => {
-    db.all('SELECT * FROM todo_items WHERE id=?', [id], (err, rows) => {
-      if (err) return rej(err);
-      acc(
-        rows.map((item) =>
-          Object.assign({}, item, {
-            completed: item.completed === 1,
-          }),
-        )[0],
-      );
-    });
+    db.get(
+      'SELECT id, name, completed FROM todo_items WHERE id=?',
+      [id],
+      (err, row) => {
+        if (err) return rej(err);
+        acc(toItem(row));
+      },
+    );
   });
 }
 
