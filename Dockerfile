@@ -1,4 +1,4 @@
-FROM node:24-bookworm-slim AS deps
+FROM node:26-bookworm-slim AS deps
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN corepack enable \
 	&& yarn install --frozen-lockfile \
 	&& yarn cache clean
 
-FROM node:24-bookworm-slim AS runtime
+FROM node:26-bookworm-slim AS runtime
 
 WORKDIR /app
 
